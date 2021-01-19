@@ -2,11 +2,15 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Add from "./components/Add";
-import Users from "./components/Users";
+import Add from "./components/users/Add";
+import Users from "./components/users/Users";
 import Header from "./components/Header";
-import SingleUser from "./components/SingleUser";
+import SingleUser from "./components/users/SingleUser";
 import Home from "./components/Home";
+import Posts from "./components/posts/Posts";
+import AddPost from "./components/posts/AddPost";
+import SinglePost from "./components/posts/SinglePost";
+
 function App() {
   return (
     <Router>
@@ -25,6 +29,18 @@ function App() {
           <Route path="/single-user/:id">
             <SingleUser />
           </Route>
+          <Route path="/posts">
+            <Posts />
+          </Route>
+          <Route path="/add-post">
+            <AddPost />
+          </Route>
+          <Route path="/single-post/:id">
+            <SinglePost />
+          </Route>
+          {/* <Route path="/delete-post/:id">
+            
+          </Route> */}
           <Route path="/">
             <Home />
           </Route>

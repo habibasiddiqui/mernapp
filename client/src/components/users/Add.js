@@ -7,18 +7,21 @@ function Add() {
  const [email,setEmail]=useState('')
  const [pwd,setPwd]=useState('')
 
-const handleSubmit=()=>{
-  let user = {name, email, pwd}
-      axios.post('http://localhost:4000/api/users/', user)
+const handleSubmit=(e)=>{
+  // e.preventDefault();
+  let user = {name, email, pwd};
+  // console.log(user)
+      axios.post('http://localhost:4000/api/users', user)
       .then(res => console.log(res.data))
       .catch(err=>console.log(err,'error'));
 
     window.location = '/users';
 
 }
+
   return (
 
-    <form  onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <Row className="mt-5" >
         <Col lg={3} md={2} sm={1} xs={1}></Col>
         <Col lg={6} md={8} sm={10} xs={10}>
@@ -47,7 +50,7 @@ const handleSubmit=()=>{
               </Row>
               <Row className="my-2">
                 <Col className="text-center">
-                  <Button variant="info" size="md">
+                  <Button type='submit' variant="info" size="md">
                     Register User
                   </Button>
                 </Col>
