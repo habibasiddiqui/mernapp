@@ -68,13 +68,18 @@ postRouter.delete('/:id', async (req, res) => {
       // else{ 
       //     console.log("Removed User : ", docs); 
       // } 
-      res.status(200).json({
-        del: delOne
+      res.json({
+        success: true,
+        status: 200,
+        del: delOne,
       })
       console.log("Removed User : ", delOne);
  
 } catch (err) {
-  res.status(400).json({ success: false, error: err.message });
+  res.json({ 
+    success: false,
+    status: 400,
+    error: err.message });
 }
 
 });

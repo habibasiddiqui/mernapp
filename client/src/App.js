@@ -10,6 +10,7 @@ import Home from "./components/Home";
 import Posts from "./components/posts/Posts";
 import AddPost from "./components/posts/AddPost";
 import SinglePost from "./components/posts/SinglePost";
+import DeletePost from "./components/posts/DeletePost";
 
 function App() {
   return (
@@ -38,9 +39,9 @@ function App() {
           <Route path="/single-post/:id">
             <SinglePost />
           </Route>
-          {/* <Route path="/delete-post/:id">
-            
-          </Route> */}
+          <Route path="/delete-post/:id">
+            <DeletePost />
+          </Route>
           <Route path="/">
             <Home />
           </Route>

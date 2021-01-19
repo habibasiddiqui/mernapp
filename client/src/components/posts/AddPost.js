@@ -12,12 +12,13 @@ const handleSubmit=(e)=>{
         title,
         body
   };
-  // console.log(user)
-      axios.post('http://localhost:4000/api/posts', post)
-      .then(res => console.log(res.data))
-      .catch(err=>console.log(err,'error'));
+  // console.log(user);
+  
+  axios.post('http://localhost:4000/api/posts', post)
+    .then(res => console.log(res.data))
+    .catch(err=>console.log(err,'error'));
 
-    window.location = '/posts';
+  window.location = '/posts';
 
 }
 

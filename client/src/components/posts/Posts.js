@@ -19,23 +19,23 @@ function Posts() {
   }, []);
   console.log(state)
 
-  const DelPost = () => {
-  const { id } = useParams();
+  // const DelPost = (item_id) => {
+  // // const { id } = useParams();
 
-  axios.delete("http://localhost:4000/api/posts/" + id, { params: {id: id} })
-    .then((res) => res.json())
-    // .then(res => console.log(res))
-    .catch((err) => console.log(err));
+  // // axios.delete("http://localhost:4000/api/posts/" + id, { params: {id: id} })
+  // //   .then((res) => res.json())
+  // //   // .then(res => console.log(res))
+  // //   .catch((err) => console.log(err));
 
 
   //     useEffect(() => {
-  //   axios.delete("http://localhost:4000/api/posts/" + id, { params: {id: id} } )
+  //   axios.delete("http://localhost:4000/api/posts/" + item_id )
   //     .then((res) => res.json())
   //     .catch((err) => console.log(err));
-  // }, [id]);
+  // }, [item_id]);
 
 
-  }
+  // }
 
 
 
@@ -73,9 +73,9 @@ function Posts() {
                   <Button 
                     variant="info"
                     size="sm"
-                    // as={Link}
-                    // to={"/delete-post/" + item._id}
-                    onClick={()=>DelPost()}
+                    as={Link}
+                    to={"/delete-post/" + item._id}
+                    // onClick={()=>DelPost(item._id)}
                   >
                     Delete
                   </Button>
