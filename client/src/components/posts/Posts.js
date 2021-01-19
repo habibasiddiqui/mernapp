@@ -8,7 +8,9 @@ import { useParams } from "react-router-dom";
 
 function Posts() {
   const [state, setstate] = useState([]);
-  // let u=2;
+  // to show post was deleted
+  const [deleted, setDeleted] = useState(false);
+  const [msg, setMsg] = useState('');
   useEffect(() => {
       axios.get('http://localhost:4000/api/posts')
       .then((res) => {
@@ -17,16 +19,22 @@ function Posts() {
       })
       .catch((e) => console.log(e));
   }, []);
-  console.log(state)
+  // console.log(state)
 
-  // const DelPost = (item_id) => {
+  const DelPost = (item_id) => {
   // // const { id } = useParams();
 
-  // // axios.delete("http://localhost:4000/api/posts/" + id, { params: {id: id} })
-  // //   .then((res) => res.json())
-  // //   // .then(res => console.log(res))
-  // //   .catch((err) => console.log(err));
-
+  axios.delete("http://localhost:4000/api/posts/" + item_id)
+    .then(
+      (res) => {
+        res.json();
+        setMsg('Post was deleted');
+        // setDeleted(true);
+        console.log(deleted)
+        // setMsg('Post Deleted');
+    })
+    .catch((err) => console.log(err));
+  window.location='/posts';
 
   //     useEffect(() => {
   //   axios.delete("http://localhost:4000/api/posts/" + item_id )
@@ -34,8 +42,7 @@ function Posts() {
   //     .catch((err) => console.log(err));
   // }, [item_id]);
 
-
-  // }
+  }
 
 
 
@@ -47,6 +54,8 @@ function Posts() {
       <Col lg={3} md={2} sm={1} xs={1}></Col>
       <Col lg={6} md={8} sm={10} xs={10}>
         <ListGroup>
+          {/* {deleted ? <span>Post Deleted</span> : <span></span>} */}
+          <span>{msg}</span>
           <ListGroup.Item variant="primary">
             <Row className="col-headers">
               <Col>Title</Col>
@@ -73,9 +82,9 @@ function Posts() {
                   <Button 
                     variant="info"
                     size="sm"
-                    as={Link}
-                    to={"/delete-post/" + item._id}
-                    // onClick={()=>DelPost(item._id)}
+                    // as={Link}
+                    // to={"/delete-post/" + item._id}
+                    onClick={()=>DelPost(item._id)}
                   >
                     Delete
                   </Button>

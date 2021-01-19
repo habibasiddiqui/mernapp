@@ -39,9 +39,9 @@ function App() {
           <Route path="/single-post/:id">
             <SinglePost />
           </Route>
-          <Route path="/delete-post/:id">
+          {/* <Route path="/delete-post/:id">
             <DeletePost />
-          </Route>
+          </Route> */}
           <Route path="/">
             <Home />
           </Route>
