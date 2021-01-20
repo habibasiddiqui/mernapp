@@ -2,6 +2,51 @@ const express = require("express");
 const postRouter = express.Router();
 const Post = require("../../models/posts.js");
 
+// images
+
+// const multer = require('multer');
+
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//       cb(null, 'images');
+//   },
+//   filename: function(req, file, cb) {   
+//       cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));
+//   }
+// });
+
+// const fileFilter = (req, file, cb) => {
+//   const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+//   if(allowedFileTypes.includes(file.mimetype)) {
+//       cb(null, true);
+//   } else {
+//       cb(null, false);
+//   }
+// }
+
+// let upload = multer({ storage, fileFilter });
+
+// // make changes here
+// postRouter.route('/add').post(upload.single('photo'), (req, res) => {
+//     const name = req.body.name;
+//     const birthdate = req.body.birthdate;
+//     const photo = req.file.filename;
+
+//     const newUserData = {
+//         name,
+//         birthdate,
+//         photo
+//     }
+
+//     const newUser = new User(newUserData);
+
+//     newUser.save()
+//            .then(() => res.json('User Added'))
+//            .catch(err => res.status(400).json('Error: ' + err));
+// });
+
+
+
 //Get all users
 postRouter.get("/", async (req, res) => {
   try {
@@ -39,26 +84,9 @@ postRouter.get('/:id', async (req, res) => {
 
 });
 
+
+
 // Delete single post
-// postRouter.delete('/:id', async (req, res) => {
-//   try {
-//     const delOne = await Post.findByIdAndRemove(req.params.id, function (err, data) { 
-//       // if (err){ 
-//       //     console.log(err) 
-//       // } 
-//       // else{ 
-//       //     console.log("Removed User : ", docs); 
-//       // } 
-//       res.status(200).json({
-//         del: data
-//       })
-//       console.log("Removed User : ", docs);
-//   }); 
-// } catch (err) {
-//   res.status(400).json({ success: false, error: err.message });
-// }
-
-
 postRouter.delete('/:id', async (req, res) => {
   try {
     const delOne = await Post.findByIdAndRemove(req.params.id);

@@ -1,19 +1,47 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { ListGroup, Row, Col } from "react-bootstrap";
+import { ListGroup, Row, Col, Button } from "react-bootstrap";
+import { TextField, InputAdornment, IconButton } from '@material-ui/core'
+import EditIcon from '@material-ui/icons/Edit';
 import { useParams } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
 
+// const useStyles = makeStyles(theme => ({
+//   disabled: {
+//     color: "black",
+//     borderBottom: 0,
+//     "&:before": {
+//       borderBottom: 0
+//     }
+//   },
+// }));
 const SinglePost = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
+  
+  // for edit
+  let [title, setTitle] = useState('');
+  
+  // const classes = useStyles();
 
   useEffect(() => {
     fetch("http://localhost:4000/api/posts/" + id)
       .then((res) => res.json())
-      .then((data) => setPost(data.data))
+      .then((data) => {setPost(data.data); setTitle(data.data.title)})
       .catch((err) => console.log(err));
   }, [id]);
 
+  // update
+  // const handleEdit = () => {
+  //   const editTitle = prompt("new title", post?.title);
+  //   setPost({
+  //     title: editTitle,
+  //   })
+  //   console.log(post);
+  // } 
+
+  let [mouseEnter, setMouseEnter] = useState(false);
+  let [editMode, setEditMode] = useState(false);
   return (
     <Row className="mt-5">
       <Col lg={3} md={2} sm={1} xs={1}></Col>
@@ -30,10 +58,60 @@ const SinglePost = () => {
             <Row>
               <Col className="col-headers">Title</Col>
               <Col>{post?.title}</Col>
+              {/* <Col>
+              <Button variant="info" size="md" onClick={()=>handleEdit()}>
+                    Edit
+                  </Button>
+              </Col> */}
             </Row>
             <Row>
               <Col className="col-headers">Body</Col>
               <Col>{post?.body}</Col>
+            </Row>
+
+            <TextField
+              // defaultValue={post?.title}
+              value={title}
+              margin="normal"
+              // onChange={(e)=>setNewTitle(e.target.value)}
+              // disabled={!editMode}
+              // className={classes.textField}
+              onMouseEnter={() => {setMouseEnter(true); }}
+              onMouseLeave={() => {setMouseEnter(false); }}
+              InputProps={{
+                // classes: {
+                //   disabled: classes.disabled
+                // },
+               
+                endAdornment: mouseEnter ? (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setEditMode(true) } >
+                      <EditIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ) : (
+                  ""
+                )
+                
+          }}
+        />
+
+{/* 
+            <Row className="my-2">
+                <Col className="text-center">
+                  <Button type='submit' variant="info" size="md">
+                    Done
+                  </Button>
+                </Col>
+            </Row> */}
+
+            
+<Row className="my-2">
+                <Col className="text-center">
+                  <Button variant="info" size="md">
+                    Edit
+                  </Button>
+                </Col>
             </Row>
             
           </ListGroup.Item>

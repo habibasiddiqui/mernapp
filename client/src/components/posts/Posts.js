@@ -60,6 +60,7 @@ function Posts() {
             <Row className="col-headers">
               <Col>Title</Col>
               <Col>Body</Col>
+              <Col>Photo</Col>
               <Col>Actions</Col>
             </Row>
           </ListGroup.Item>
@@ -69,6 +70,8 @@ function Posts() {
               <Row>
                 <Col>{item.title}</Col>
                 <Col>{item.body}</Col>
+                <Col><img width='100px' src={item.image}/></Col>
+
                 <Col>
                   <Button 
                     variant="info"
@@ -78,7 +81,7 @@ function Posts() {
                   >
                     View
                   </Button>
-                  &nbsp; &nbsp; &nbsp; &nbsp;
+                  &nbsp; &nbsp;
                   <Button 
                     variant="info"
                     size="sm"

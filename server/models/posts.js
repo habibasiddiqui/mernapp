@@ -10,6 +10,7 @@ const postSchema = mongoose.Schema({
         required: [true, 'Body is required']
         
     },
+    image: String,
     createdAt: {
         type: Date,
         default: new Date()

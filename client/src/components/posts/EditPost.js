@@ -39,6 +39,7 @@ const handleSubmit=(e)=>{
                 <Col sm={12} md={3} className="col-headers">Title</Col>
                 <Col sm={12} md={9} >
                   <input 
+                  
                     type="text"
                     name='name' 
                     onChange={(e)=>setTitle(e.target.value)} />
@@ -69,7 +70,7 @@ const handleSubmit=(e)=>{
               <Row className="my-2">
                 <Col className="text-center">
                   <Button type='submit' variant="info" size="md">
-                    Add Post
+                    Edit
                   </Button>
                 </Col>
               </Row>
