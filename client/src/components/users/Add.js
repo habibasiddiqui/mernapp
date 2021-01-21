@@ -6,16 +6,20 @@ function Add() {
  const [name,setName]=useState('')
  const [email,setEmail]=useState('')
  const [pwd,setPwd]=useState('')
-
+  // to check single user and no repeat
+ const [unique, setUnique] = useState('');
 const handleSubmit=(e)=>{
-  // e.preventDefault();
+   e.preventDefault();
   let user = {name, email, pwd};
   // console.log(user)
       axios.post('http://localhost:4000/api/users', user)
-      .then(res => console.log(res.data))
+      .then(res => {
+        setUnique(res.data.unique);
+        console.log(res.data)
+      })
       .catch(err=>console.log(err,'error'));
 
-    window.location = '/users';
+   // window.location = '/users';
 
 }
 

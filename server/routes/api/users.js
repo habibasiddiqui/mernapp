@@ -17,24 +17,38 @@ router.get("/", async (req, res) => {
 });
 router.post("/", async (req, res) => {
   try{
-      const user = await User.create(req.body);
-      res.status(201).json({
-      success: true,
-      dbid: user._id
-    });
-  } 
+    User.findOne({email: req.body.email})
+    .then(user => {
+      
+      if(user)
+      {
+        res.json({
+          success: false,
+          status: 404,
+          unique: false,
+          msg: 'user already exists' 
+        })
+      }
+      else {
+        User.create(req.body)
+        .then (user => {
+          res.json({
+            status: 201,
+            success: true,
+            dbid: user._id,
+            unique: true,
+            msg: 'user created',
+          })
+        })
+      }
+
+    })
+  } // try end
   catch (err) {
     console.log(err);
     res.status(400).json({ success: false, error: err.message });
   }
 
-  // const newUser = new User(usr);
-  // try {
-  //   await newUser.save();
-  //   res.status(201).json(usr);
-  // } catch (e) {
-  //   res.status(400).json({ message: "error in saving users" });
-  // }
 });
 
 //Get single user

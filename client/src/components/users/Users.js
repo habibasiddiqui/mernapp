@@ -5,11 +5,11 @@ import axios from 'axios';
 
 function Users() {
   const [state, setstate] = useState([]);
-  // let u=2;
+
   useEffect(() => {
       axios.get('http://localhost:4000/api/users')
       .then((res) => {
-        console.log(res.data.data);
+        console.log(res.data);
         setstate(res.data.data);
       })
       .catch((e) => console.log(e));

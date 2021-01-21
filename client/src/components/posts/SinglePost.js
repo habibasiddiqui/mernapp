@@ -73,7 +73,7 @@ const SinglePost = () => {
               // defaultValue={post?.title}
               value={title}
               margin="normal"
-              // onChange={(e)=>setNewTitle(e.target.value)}
+              onChange={(e)=>setTitle(e.target.value)}
               // disabled={!editMode}
               // className={classes.textField}
               onMouseEnter={() => {setMouseEnter(true); }}
