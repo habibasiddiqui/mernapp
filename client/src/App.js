@@ -11,6 +11,9 @@ import Posts from "./components/posts/Posts";
 import AddPost from "./components/posts/AddPost";
 import SinglePost from "./components/posts/SinglePost";
 import DeletePost from "./components/posts/DeletePost";
+import Products from "./components/products/Products";
+import AddProduct from "./components/products/AddProduct";
+import SingleProduct from "./components/products/SingleProduct";
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
           <Route path="/single-user/:id">
             <SingleUser />
           </Route>
+
+
           <Route path="/posts">
             <Posts />
           </Route>
@@ -39,9 +44,19 @@ function App() {
           <Route path="/single-post/:id">
             <SinglePost />
           </Route>
-          {/* <Route path="/delete-post/:id">
-            <DeletePost />
-          </Route> */}
+
+
+
+          <Route path="/products">
+            <Products />
+          </Route>
+          <Route path="/add-product">
+            <AddProduct />
+          </Route>
+          <Route path="/single-product/:id">
+            <SingleProduct/>
+          </Route>
+
           <Route path="/">
             <Home />
           </Route>

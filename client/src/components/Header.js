@@ -21,6 +21,15 @@ const Header = () => {
         <Nav.Link as={Link} to="/add-post">
           Add Post
         </Nav.Link>
+
+
+        <Nav.Link as={Link} to="/products">
+          Products
+        </Nav.Link>
+
+        <Nav.Link as={Link} to="/add-product">
+          Add Product
+        </Nav.Link>
       </Nav>
     </Navbar>
   );

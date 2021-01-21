@@ -5,7 +5,7 @@ const dbConnect = require('./config/db.js');
 var cors = require('cors')
 const userRoute = require('./routes/api/users')
 const postRoute = require('./routes/api/posts') 
-
+const prodRoute = require('./routes/api/products');
 // // for image 
 // // var mongoose = require('mongoose')
 // var fs = require('fs');
@@ -27,7 +27,7 @@ console.log('server is running at', PORT)
 ///Routes
 app.use('/api/users', userRoute);
 app.use('/api/posts', postRoute);
-
+app.use('/api/products', prodRoute );
 
 // image/products
 // app.set("view engine", "ejs");
