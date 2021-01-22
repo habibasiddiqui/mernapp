@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import { Button, ListGroup, Row, Col } from "react-bootstrap";
 import axios from 'axios';
 import FileBase64 from "react-file-base64";
+import { useHistory } from 'react-router-dom'
+
 function AddPost() {
 const [body, setBody] = useState('');
 const [title, setTitle] = useState('');
 const [image, setImage] = useState('');
 
+const history = useHistory();
+  
 const handleSubmit=(e)=>{
-  // e.preventDefault();
+  e.preventDefault();
   let post = {
         title,
         body,
@@ -17,10 +21,12 @@ const handleSubmit=(e)=>{
   // console.log(user);
   
   axios.post('http://localhost:4000/api/posts', post)
-    .then(res => console.log(res.data))
+    .then(res => {
+      console.log(res.data);
+      history.push('/posts');
+    })
     .catch(err=>console.log(err,'error'));
 
-  window.location = '/posts';
 
 }
 

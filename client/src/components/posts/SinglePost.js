@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ListGroup, Row, Col, Button } from "react-bootstrap";
 import { TextField, InputAdornment, IconButton } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit';
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 // const useStyles = makeStyles(theme => ({
@@ -18,7 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const SinglePost = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
-  
+
   // for edit
   let [title, setTitle] = useState('');
   
@@ -69,7 +69,7 @@ const SinglePost = () => {
               <Col>{post?.body}</Col>
             </Row>
 
-            <TextField
+            {/* <TextField
               // defaultValue={post?.title}
               value={title}
               margin="normal"
@@ -94,7 +94,7 @@ const SinglePost = () => {
                 )
                 
           }}
-        />
+        /> */}
 
 {/* 
             <Row className="my-2">
@@ -106,7 +106,7 @@ const SinglePost = () => {
             </Row> */}
 
             
-<Row className="my-2">
+            <Row className="my-2">
                 <Col className="text-center">
                   <Button variant="info" size="md">
                     Edit

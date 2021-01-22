@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ListGroup, Row, Col, Button } from "react-bootstrap";
+import { ListGroup, Row, Col, Button, Alert } from "react-bootstrap";
 import axios from 'axios';
-import DeletePost from "./DeletePost";
+import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import DeleteDialog from "./DeleteDialog";
 
 
 function Posts() {
   const [state, setstate] = useState([]);
-  // to show post was deleted
-  const [deleted, setDeleted] = useState(false);
+  // to change for useefffect
+  const [reload, setReload] = useState(false);
   const [msg, setMsg] = useState('');
+  const [delFlag, setDelFlag] = useState(false);
+  // const history = useHistory();
+
   useEffect(() => {
       axios.get('http://localhost:4000/api/posts')
       .then((res) => {
@@ -18,44 +22,36 @@ function Posts() {
         setstate(res.data.data);
       })
       .catch((e) => console.log(e));
-  }, []);
-  // console.log(state)
+      setMsg('');
+  }, [reload]);
 
   const DelPost = (item_id) => {
-  // // const { id } = useParams();
 
   axios.delete("http://localhost:4000/api/posts/" + item_id)
     .then(
       (res) => {
-        res.json();
-        setMsg('Post was deleted');
-        // setDeleted(true);
-        console.log(deleted)
-        // setMsg('Post Deleted');
-    })
+        setDelFlag(true);
+        setMsg('Post was deleted successfully');
+        // history.pushState('/posts');
+        setReload(!reload);
+      })
     .catch((err) => console.log(err));
-  window.location='/posts';
-
-  //     useEffect(() => {
-  //   axios.delete("http://localhost:4000/api/posts/" + item_id )
-  //     .then((res) => res.json())
-  //     .catch((err) => console.log(err));
-  // }, [item_id]);
-
   }
 
-
-
+  
+  const [show, setShow] = useState('');
 
 
   return (
-
+<>
     <Row className="mt-5">
       <Col lg={3} md={2} sm={1} xs={1}></Col>
       <Col lg={6} md={8} sm={10} xs={10}>
         <ListGroup>
-          {/* {deleted ? <span>Post Deleted</span> : <span></span>} */}
-          <span>{msg}</span>
+          {delFlag ? <Alert variant="success" 
+          onClose={() => setShow(false)} 
+          dismissible>Post was deleted successfully</Alert> : <span></span>}
+
           <ListGroup.Item variant="primary">
             <Row className="col-headers">
               <Col>Title</Col>
@@ -82,16 +78,14 @@ function Posts() {
                     View
                   </Button>
                   &nbsp; &nbsp;
-                  <Button 
+                  {/* <Button 
                     variant="info"
                     size="sm"
-                    // as={Link}
-                    // to={"/delete-post/" + item._id}
                     onClick={()=>DelPost(item._id)}
                   >
                     Delete
-                  </Button>
-                  
+                  </Button> */}
+                  <DeleteDialog handleDelete={DelPost} id={item._id}/>
                   
                 </Col>
               </Row>
@@ -101,6 +95,12 @@ function Posts() {
       </Col>
       <Col lg={3} md={2} sm={1} xs={1}></Col>
     </Row>
+
+  
+    
+    
+
+</>
   );
 }
 

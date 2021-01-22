@@ -1,25 +1,29 @@
 import React, { useState } from "react";
-import { Button, ListGroup, Row, Col } from "react-bootstrap";
+import { Button, ListGroup, Row, Col, Alert } from "react-bootstrap";
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 function Add() {
  const [name,setName]=useState('')
  const [email,setEmail]=useState('')
  const [pwd,setPwd]=useState('')
+
+ const history = useHistory();
   // to check single user and no repeat
- const [unique, setUnique] = useState('');
+ const [unique, setUnique] = useState(true);
 const handleSubmit=(e)=>{
    e.preventDefault();
   let user = {name, email, pwd};
   // console.log(user)
       axios.post('http://localhost:4000/api/users', user)
       .then(res => {
+        console.log(res.data);
         setUnique(res.data.unique);
-        console.log(res.data)
+        if(unique)
+          history.push('/users');
       })
       .catch(err=>console.log(err,'error'));
 
-   // window.location = '/users';
 
 }
 
@@ -29,7 +33,11 @@ const handleSubmit=(e)=>{
       <Row className="mt-5" >
         <Col lg={3} md={2} sm={1} xs={1}></Col>
         <Col lg={6} md={8} sm={10} xs={10}>
-          {unique ? <span>Email created</span> : <span>Email already exists</span>}
+          {/* {unique ? <Alert variant="success">
+            Email created successfully</Alert> : <Alert variant="danger">
+            Email already exists</Alert>} */}
+          {!unique ? <Alert variant="danger">
+            Email already exists</Alert> : <span>asadas</span>}
           <ListGroup>
             <ListGroup.Item variant="primary" className="col-headers">
               Register New User

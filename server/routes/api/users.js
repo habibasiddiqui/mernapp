@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   try {
 
     const users = await User.find();
-    console.log(users);
+    // console.log(users);
     res.status(200).json({ success: true, data: users });
   } 
   catch (e) {
@@ -18,18 +18,9 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try{
     User.findOne({email: req.body.email})
-    .then(user => {
-      
-      if(user)
+    .then(user => { 
+      if(!user)
       {
-        res.json({
-          success: false,
-          status: 404,
-          unique: false,
-          msg: 'user already exists' 
-        })
-      }
-      else {
         User.create(req.body)
         .then (user => {
           res.json({
@@ -37,12 +28,21 @@ router.post("/", async (req, res) => {
             success: true,
             dbid: user._id,
             unique: true,
-            msg: 'user created',
-          })
+            // msg: 'user created',
+          });
         })
       }
-
     })
+    .catch(err => {
+      res.json({
+      success: false,
+      status: 404,
+      unique: false,
+      msg: err, 
+      })
+    })
+    
+
   } // try end
   catch (err) {
     console.log(err);
