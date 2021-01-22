@@ -29,6 +29,7 @@ const handleSubmit=(e)=>{
       <Row className="mt-5" >
         <Col lg={3} md={2} sm={1} xs={1}></Col>
         <Col lg={6} md={8} sm={10} xs={10}>
+          {unique ? <span>Email created</span> : <span>Email already exists</span>}
           <ListGroup>
             <ListGroup.Item variant="primary" className="col-headers">
               Register New User
