@@ -9,7 +9,7 @@ import DeleteDialog from "./DeleteDialog";
 
 function Posts() {
   const [state, setstate] = useState([]);
-  // to change for useefffect
+  // to change for useefffect whenever deletes
   const [reload, setReload] = useState(false);
   const [msg, setMsg] = useState('');
   const [delFlag, setDelFlag] = useState(false);
@@ -30,16 +30,17 @@ function Posts() {
   axios.delete("http://localhost:4000/api/posts/" + item_id)
     .then(
       (res) => {
-        setDelFlag(true);
-        setMsg('Post was deleted successfully');
         // history.pushState('/posts');
         setReload(!reload);
+        setDelFlag(true);
+        setMsg('Post was deleted successfully');
+        
       })
     .catch((err) => console.log(err));
   }
 
   
-  const [show, setShow] = useState('');
+  const [show, setShow] = useState(true);
 
 
   return (
@@ -48,9 +49,11 @@ function Posts() {
       <Col lg={3} md={2} sm={1} xs={1}></Col>
       <Col lg={6} md={8} sm={10} xs={10}>
         <ListGroup>
-          {delFlag ? <Alert variant="success" 
-          onClose={() => setShow(false)} 
-          dismissible>Post was deleted successfully</Alert> : <span></span>}
+          {delFlag ?
+            <Alert variant="success" onClose={() => {setShow(false); setDelFlag(false)}} dismissible>
+              Post was deleted successfully
+            </Alert>
+            : <span></span>}
 
           <ListGroup.Item variant="primary">
             <Row className="col-headers">
@@ -78,13 +81,7 @@ function Posts() {
                     View
                   </Button>
                   &nbsp; &nbsp;
-                  {/* <Button 
-                    variant="info"
-                    size="sm"
-                    onClick={()=>DelPost(item._id)}
-                  >
-                    Delete
-                  </Button> */}
+
                   <DeleteDialog handleDelete={DelPost} id={item._id}/>
                   
                 </Col>

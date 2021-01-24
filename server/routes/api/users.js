@@ -15,6 +15,8 @@ router.get("/", async (req, res) => {
     res.status(404).json({ success: false, error: err.message });
   }
 });
+
+// add single user
 router.post("/", async (req, res) => {
   try{
     User.findOne({email: req.body.email})
@@ -59,11 +61,26 @@ router.get('/:id', async (req, res) => {
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
   }
+});
 
-    // let id = parseInt(req.params.id)
-    // console.log(id)
-    // let result = users.filter((item) => item.id == id)
-    // res.json(result[0])
+// delete single user
+router.delete('/:id', async (req, res) => {
+  try {
+    const delOne = await User.findByIdAndRemove(req.params.id);
+      res.json({
+        success: true,
+        status: 200,
+        del: delOne,
+      })
+      console.log("Removed User : ", delOne);
+ 
+} catch (err) {
+  res.json({ 
+    success: false,
+    status: 400,
+    error: err.message });
+}
+
 });
 
 module.exports = router;

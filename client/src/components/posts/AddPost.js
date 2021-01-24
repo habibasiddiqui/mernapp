@@ -56,7 +56,7 @@ const handleSubmit=(e)=>{
                   <textarea 
                     rows='5'
                     style={{width: '100%'}} 
-                    type="text" name='email' 
+                    type="text" name='body' 
                     onChange={(e)=>setBody(e.target.value)} >
                   </textarea>
                 </Col>

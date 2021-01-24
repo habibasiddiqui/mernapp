@@ -5,6 +5,7 @@ import { TextField, InputAdornment, IconButton } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit';
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 // const useStyles = makeStyles(theme => ({
 //   disabled: {
@@ -21,15 +22,20 @@ const SinglePost = () => {
 
   // for edit
   let [title, setTitle] = useState('');
+  let [body, setBody] = useState('');
+  let [image, setImage] = useState('');
   
   // const classes = useStyles();
 
   useEffect(() => {
     fetch("http://localhost:4000/api/posts/" + id)
       .then((res) => res.json())
-      .then((data) => {setPost(data.data); setTitle(data.data.title)})
+      .then((data) => {
+        setPost(data.data); 
+      })
       .catch((err) => console.log(err));
   }, [id]);
+  console.log(title, body, image);
 
   // update
   // const handleEdit = () => {
@@ -40,8 +46,9 @@ const SinglePost = () => {
   //   console.log(post);
   // } 
 
-  let [mouseEnter, setMouseEnter] = useState(false);
-  let [editMode, setEditMode] = useState(false);
+  // let [mouseEnter, setMouseEnter] = useState(false);
+  // let [editMode, setEditMode] = useState(false);
+
   return (
     <Row className="mt-5">
       <Col lg={3} md={2} sm={1} xs={1}></Col>
@@ -58,15 +65,14 @@ const SinglePost = () => {
             <Row>
               <Col className="col-headers">Title</Col>
               <Col>{post?.title}</Col>
-              {/* <Col>
-              <Button variant="info" size="md" onClick={()=>handleEdit()}>
-                    Edit
-                  </Button>
-              </Col> */}
             </Row>
             <Row>
               <Col className="col-headers">Body</Col>
               <Col>{post?.body}</Col>
+            </Row>
+            <Row>
+              <Col className="col-headers">Image</Col>
+              <Col><img src={post?.image} width='100px'/></Col>
             </Row>
 
             {/* <TextField
@@ -108,8 +114,11 @@ const SinglePost = () => {
             
             <Row className="my-2">
                 <Col className="text-center">
-                  <Button variant="info" size="md">
-                    Edit
+                  <Button variant="info"
+                    size="sm"
+                    as={Link}
+                    to={"/edit-post/" + post?._id}>
+                      Edit
                   </Button>
                 </Col>
             </Row>
