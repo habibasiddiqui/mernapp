@@ -11,6 +11,9 @@ import Posts from "./components/posts/Posts";
 import AddPost from "./components/posts/AddPost";
 import SinglePost from "./components/posts/SinglePost";
 import EditPost from "./components/posts/EditPost";
+import SinglePostHome from "./components/posts/SinglePostHome";
+import Signin from "./components/authorization/Signin";
+import Signup from "./components/authorization/Signup";
 
 function App() {
   return (
@@ -18,9 +21,8 @@ function App() {
       <div>
         <Header />
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Switch>
+          {/* User */}
           <Route path="/register">
             <Add />
           </Route>
@@ -31,6 +33,7 @@ function App() {
             <SingleUser />
           </Route>
           
+          {/* Post */}
           <Route path="/posts">
             <Posts />
           </Route>
@@ -43,7 +46,18 @@ function App() {
           <Route path="/edit-post/:id">
             <EditPost />
           </Route>
+          <Route path="/single-post-home/:id">
+            <SinglePostHome />
+          </Route>
 
+          {/* auth */}
+          <Route path='/signin'>
+            <Signin />
+          </Route>
+          <Route path='/signup'>
+            <Signup />
+          </Route>
+          
           <Route path="/">
             <Home />
           </Route>
