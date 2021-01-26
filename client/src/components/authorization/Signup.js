@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Password from './Password';
 import { Grid, TextField, InputAdornment, Typography, Button} from '@material-ui/core';
-import { AccountCircleIcon } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 
 // const useStyles = makeStyles((theme) => ({
 //     root: {
@@ -14,11 +16,40 @@ import LockIcon from '@material-ui/icons/Lock';
 //         width: '25ch',
 //       },
 //     },
+
+    
 //   }));
 
 function Signup() {
 
     // const classes = useStyles();
+    const [name,setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [pwd,setPwd] = useState('');
+    
+    const history = useHistory();
+    // to check single user and no repeat
+    const [unique, setUnique] = useState(false);
+    const [msg, setMsg] = useState('');
+    const [show, setShow] = useState(true);
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let user = {name, email, pwd};
+        // console.log(user)
+            axios.post('http://localhost:4000/api/users', user)
+            .then(res => {
+                console.log(res.data);
+                // setUnique(res.data.unique);
+                // if(unique)
+                    history.push('/users');
+                // else
+                //     setMsg('Email already exists');
+                
+            })
+            .catch(err=>console.log(err,'error'));
+    }
+    // console.log(unique)
 
     return (
         <div>
@@ -29,35 +60,45 @@ function Signup() {
                 
                 <Grid item xs={10} md={8} lg={6} className='form-container' >
                     <Typography variant='h4' className='title' >Sign Up</Typography>
-                    <form className='signup-form' >
+                    
+                    {/* {unique ? 
+                    <span></span> : 
+                    <Alert variant="danger" onClose={() => {setShow(false); setUnique(false)}} dismissible>
+                        {msg}
+                    </Alert>} */}
+
+                    <form className='signup-form' onSubmit={handleSubmit} >
 
                     
                     
 
                     <Grid className='signup-inputs' container spacing={1} alignItems="flex-end">
                         <Grid className='' item sm={1} md={1}>
-                            <PersonIcon />
+                            <PersonIcon className='icon'/>
                         </Grid>
                         <Grid  className='input-container' item sm={10} md={6}>
-                            <TextField label="Username" className='input-textfield'  />
+                            <TextField label="Username" className='input-textfield'
+                            onChange={(e)=>setName(e.target.value)} />
                         </Grid>
                     </Grid>
 
                     <Grid className='signup-inputs' container spacing={1} alignItems="flex-end">
                         <Grid item sm={1} md={1}>
-                            <EmailIcon />
+                            <EmailIcon className='icon' />
                         </Grid>
                         <Grid item item sm={10} md={6}>
-                            <TextField className='input-textfield'  label="Email"/>
+                            <TextField className='input-textfield' label="Email" 
+                            onChange={(e)=>setEmail(e.target.value)} />
                         </Grid>
                     </Grid>
 
                     <Grid className='signup-inputs' container spacing={1} alignItems="flex-end">
                         <Grid item sm={1} md={1}>
-                            <LockIcon />
+                            <LockIcon className='icon' />
                         </Grid>
                         <Grid item item sm={10} md={6}>
-                            <TextField className='input-textfield' label="Password" />
+                            <TextField className='input-textfield' label="Password" 
+                            onChange={(e)=>setPwd(e.target.value)} />
                         </Grid>
                     </Grid>
 
@@ -75,7 +116,7 @@ function Signup() {
 
 
 
-                    {/* to unchange width and center effects of form */}
+                    {/* to unchange width and center effects of form back to original*/}
                     {/* <Grid className='signup-input' container spacing={1} alignItems="flex-end">
                         <Grid item>
                             <LockIcon />

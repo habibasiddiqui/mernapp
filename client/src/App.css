@@ -89,6 +89,7 @@
   width: 80%;
   border: 2px solid #102027;
   border-radius: 6px;
+  box-shadow: 0 0 4px 2px #5ddef4;
   /* text-align: center; */
 }
 
@@ -96,7 +97,9 @@
   /* border: 1px solid green; */
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px !important;
+  margin-top: 20px !important;
+
 }
 
 .input-container{
@@ -116,10 +119,19 @@
   color: #fff !important;
 }
 
+.icon{
+  color: #007c91;
+}
 
-
-
-
+.MuiInputBase-input:focus{
+  border-color: #007c91
+}
+.MuiInput-underline:after{
+  border-bottom: 2px solid #007c91 !important;
+}
+.MuiFormLabel-root.Mui-focused {
+  color: #102027 !important;
+}
 
 
 
@@ -130,7 +142,7 @@
 
 input[type="text"],
 input[type="password"] {
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   padding: 5px 10px;
   border-radius: 5px;
   margin-top: 2px;

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 //const users = require('../../Users');
 const User = require("../../models/users.js");
 
@@ -18,12 +19,16 @@ router.get("/", async (req, res) => {
 
 // add single user
 router.post("/", async (req, res) => {
+  let {email, name, pwd} = req.body;
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync(pwd, salt);
+  let newUser = { pwd: hash, email, name }
   try{
     User.findOne({email: req.body.email})
     .then(user => { 
       if(!user)
       {
-        User.create(req.body)
+        User.create(newUser)
         .then (user => {
           res.json({
             status: 201,
@@ -82,5 +87,33 @@ router.delete('/:id', async (req, res) => {
 }
 
 });
+
+router.post('/login', async (req, res) => {
+  let { pwd, email } = req.body;
+  // console.log(req.body)
+  try {
+    User.findOne({ email })
+      .then(user => {
+        // console.log(user)
+        bcrypt.compare(pwd, user.pwd).then((isMatch) => {
+          if (!isMatch) 
+            return res.status(400).json({ msg: "Invalid credentials" });
+          else {
+            res.json({
+              status: 200,
+              data: user,
+              msg: "login success"
+            })
+
+          }//else
+        }) //bcypt then
+        // .catch(err => console.log('.....', err))
+      })//usr then
+  }//try
+  catch (error) {
+    console.log(error)
+  }
+}//post
+)
 
 module.exports = router;
