@@ -11,12 +11,12 @@ const Header = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link className='navlink' as={Link} to="/users">
+          {/* <Nav.Link className='navlink' as={Link} to="/users">
             Users
           </Nav.Link>
           <Nav.Link className='navlink' as={Link} to="/register">
             Register
-          </Nav.Link>
+          </Nav.Link> */}
 
           <Nav.Link className='navlink' as={Link} to="/posts">
             Posts
@@ -27,15 +27,10 @@ const Header = () => {
         </Nav>
 
         <Nav className="ml-auto">
-          <Nav.Link className='navlink' as={Link} to="/signup">
-            Sign Up
-          </Nav.Link>
-          <Nav.Link className='navlink' as={Link} to="/signin">
-            Sign In
-          </Nav.Link>
           <Nav.Link className='navlink' as={Link} to="/signout">
             Sign Out
           </Nav.Link>
+          
         </Nav>
       </Navbar.Collapse>
       

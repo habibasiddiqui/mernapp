@@ -88,6 +88,7 @@ router.delete('/:id', async (req, res) => {
 
 });
 
+// SIGNIN
 router.post('/login', async (req, res) => {
   let { pwd, email } = req.body;
   // console.log(req.body)
@@ -99,6 +100,9 @@ router.post('/login', async (req, res) => {
           if (!isMatch) 
             return res.status(400).json({ msg: "Invalid credentials" });
           else {
+            let sessUser = { id: user._id, name: user.name, email: user.email };
+            req.session.user = sessUser;
+            // console.log(req.session.user);
             res.json({
               status: 200,
               data: user,
@@ -113,7 +117,29 @@ router.post('/login', async (req, res) => {
   catch (error) {
     console.log(error)
   }
-}//post
+} // POST
 )
+
+// SIGNOUT
+router.post('/logout',(req,res)=>{
+  req.session.destroy( err => {
+    if (err)
+    {
+      res.json({
+        status: 400,
+        msg: 'logout failed'
+      })
+    } //IF
+    else 
+    {
+      res.clearCookie('session-id');
+      res.json({
+        status: 200,
+        msg: 'logout successful'
+      })
+    } //ELSE
+  }) //SESSION.DESTROY
+  
+}) //POST
 
 module.exports = router;

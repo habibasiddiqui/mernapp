@@ -31,22 +31,24 @@ dotenv.config();
 
 const mongoDBstore = new MongoDBStore({
     uri: process.env.MONGO_URI,
-    collection: "onlineUsers"
+    collection: "mySessions"
 });
 
+const MAX_AGE = 1000 * 60 * 60 * 3; // Three hours
 app.use(
     session({
-    //   name: COOKIE_NAME, //name to be put in "key" field in postman etc
-    //   secret: SESS_SECRET,
-    //   resave: true,
-    //   saveUninitialized: false,
-      userID: 1,
-      userName: 'a',
-      role: 'admin',   
+      name: 'online-users', //name to be put in "key" field in postman etc
+      secret: 'secret',
+      resave: true,
+      saveUninitialized: false,
+       
       store: mongoDBstore,
       cookie: {
-        // maxAge: MAX_AGE,
+        maxAge: MAX_AGE,
         // sameSite: false,
+        // userID: '',
+        // userName: '',
+        // role: '',  
         secure: true
       }
     })

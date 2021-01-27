@@ -61,7 +61,7 @@ function Signin() {
                             <LockIcon className='icon' />
                         </Grid>
                         <Grid item item sm={10} md={6}>
-                            <TextField className='input-textfield' label="Password"
+                            <TextField className='input-textfield' label="Password" type='password'
                             onChange={(e)=>setPwd(e.target.value)} />
                         </Grid>
                     </Grid>

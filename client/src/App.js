@@ -14,6 +14,7 @@ import EditPost from "./components/posts/EditPost";
 import SinglePostHome from "./components/posts/SinglePostHome";
 import Signin from "./components/authorization/Signin";
 import Signup from "./components/authorization/Signup";
+import SignOut from "./components/authorization/SignOut";
 
 function App() {
   return (
@@ -56,6 +57,9 @@ function App() {
           </Route>
           <Route path='/signup'>
             <Signup />
+          </Route>
+          <Route path='/signout'>
+            <SignOut />
           </Route>
           
           <Route path="/">

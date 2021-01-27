@@ -58,7 +58,7 @@ function PostHome() {
             
             <Grid className='post-div' item sm={12} md={8} lg={8}>
                 {state.map ((item, ind) => (
-                    <Card key={ind}className="text-left single-post-div">
+                    <Card key={ind} className="text-left single-post-div">
                     <Card.Header className='title'>
                         <Card.Title>{item.title}</Card.Title>
                     </Card.Header>
@@ -74,7 +74,7 @@ function PostHome() {
                             </Grid>
                         </Grid>
                         
-                        <Button className='post-read' as={Link}
+                        <Button className='submit' as={Link}
                             to={"/single-post-home/" + item._id}>
                         Continue reading
                         </Button>
