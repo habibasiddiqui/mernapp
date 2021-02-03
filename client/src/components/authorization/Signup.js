@@ -87,7 +87,7 @@ function Signup() {
                             <EmailIcon className='icon' />
                         </Grid>
                         <Grid item item sm={10} md={6}>
-                            <TextField className='input-textfield' label="Email" 
+                            <TextField className='input-textfield' label="Email" type='email'
                             onChange={(e)=>setEmail(e.target.value)} />
                         </Grid>
                     </Grid>

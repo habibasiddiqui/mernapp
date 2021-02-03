@@ -3,11 +3,20 @@ import { Link } from "react-router-dom";
 import { ListGroup, Row, Col, Button, Alert } from "react-bootstrap";
 import axios from 'axios';
 import DeleteDialog from './DeleteDialog';
+import Editable from "../tables/Editable";
 
 function Users() {
+
+  // table column
+  const [cols, setCols] = useState([
+    { title: 'Name', field: 'name', editable: 'onUpdate' },
+    { title: 'Email', field: 'email', editable: 'never' },
+  ])
+  // table rows
   const [state, setstate] = useState([]);
 
   const [reload, setReload] = useState(false);
+  
   const [msg, setMsg] = useState('');
   const [delFlag, setDelFlag] = useState(false);
 
@@ -35,52 +44,53 @@ function Users() {
   
   const [show, setShow] = useState(true);
 
-
   return (
 
-    <Row className="mt-5">
-      <Col lg={3} md={2} sm={1} xs={1}></Col>
-      <Col lg={6} md={8} sm={10} xs={10}>
-        <ListGroup>
-          {delFlag ?
-            <Alert variant="success" onClose={() => {setShow(false); setDelFlag(false)}} dismissible>
-              {msg}
-            </Alert>
-            : <span></span>}
+    <Editable rows={state} cols={cols} />
 
-          <ListGroup.Item variant="primary">
-            <Row className="col-headers">
-              <Col>Name</Col>
-              <Col>Email</Col>
-              <Col>Actions</Col>
-            </Row>
-          </ListGroup.Item>
+    // <Row className="mt-5">
+    //   <Col lg={3} md={2} sm={1} xs={1}></Col>
+    //   <Col lg={6} md={8} sm={10} xs={10}>
+    //     <ListGroup>
+    //       {delFlag ?
+    //         <Alert variant="success" onClose={() => {setShow(false); setDelFlag(false)}} dismissible>
+    //           {msg}
+    //         </Alert>
+    //         : <span></span>}
 
-          {state.map((item, ind) => (
-            <ListGroup.Item key={ind} variant="light">
-              <Row>
-                <Col>{item.name}</Col>
-                <Col>{item.email}</Col>
-                <Col>
-                  <Button 
-                    variant="info"
-                    size="sm"
-                    as={Link}
-                    to={"/single-user/" + item._id}
-                  >
-                    View
-                  </Button>
+    //       <ListGroup.Item variant="primary">
+    //         <Row className="col-headers">
+    //           <Col>Name</Col>
+    //           <Col>Email</Col>
+    //           <Col>Actions</Col>
+    //         </Row>
+    //       </ListGroup.Item>
 
-                  <DeleteDialog handleDelete={DelPost} id={item._id}/>
+    //       {state.map((item, ind) => (
+    //         <ListGroup.Item key={ind} variant="light">
+    //           <Row>
+    //             <Col>{item.name}</Col>
+    //             <Col>{item.email}</Col>
+    //             <Col>
+    //               <Button 
+    //                 variant="info"
+    //                 size="sm"
+    //                 as={Link}
+    //                 to={"/single-user/" + item._id}
+    //               >
+    //                 View
+    //               </Button>
 
-                </Col>
-              </Row>
-            </ListGroup.Item>
-          ))} 
-        </ListGroup>
-      </Col>
-      <Col lg={3} md={2} sm={1} xs={1}></Col>
-    </Row>
+    //               <DeleteDialog handleDelete={DelPost} id={item._id}/>
+
+    //             </Col>
+    //           </Row>
+    //         </ListGroup.Item>
+    //       ))} 
+    //     </ListGroup>
+    //   </Col>
+    //   <Col lg={3} md={2} sm={1} xs={1}></Col>
+    // </Row>
   );
 }
 
