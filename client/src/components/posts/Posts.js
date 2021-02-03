@@ -15,7 +15,9 @@ function Posts() {
   const [cols, setCols] = useState([
     { title: 'Title', field: 'title', editable: 'onUpdate' },
     { title: 'Body', field: 'body', editable: 'onUpdate' },
-    { title: 'Image', field: 'image', editable: 'onUpdate' },
+    // { title: 'Image', field: 'image', editable: 'onUpdate', 
+      // render: rowData => <img src={rowData.imageUrl} style={{width: 40, borderRadius: '50%'}} 
+    // },
 
   ])
   // table rows
@@ -64,56 +66,57 @@ function Posts() {
 
   return (
 
-    <Editable rows={state} cols={cols} />
+    <>
+    <Editable rows={state} cols={cols} tableName='Posts' />
 
-    //  <Row className="mt-5">
-    //   <Col lg={3} md={2} sm={1} xs={1}></Col>
-    //   <Col lg={6} md={8} sm={10} xs={10}>
-    //     <ListGroup>
-    //       {delFlag ?
-    //         <Alert variant="success" onClose={() => {setShow(false); setDelFlag(false)}} dismissible>
-    //           Post was deleted successfully
-    //         </Alert>
-    //         : <span></span>}
+     <Row className="mt-5">
+      <Col lg={3} md={2} sm={1} xs={1}></Col>
+      <Col lg={6} md={8} sm={10} xs={10}>
+        <ListGroup>
+          {delFlag ?
+            <Alert variant="success" onClose={() => {setShow(false); setDelFlag(false)}} dismissible>
+              Post was deleted successfully
+            </Alert>
+            : <span></span>}
 
-    //       <ListGroup.Item variant="primary">
-    //         <Row className="col-headers">
-    //           <Col>Title</Col>
-    //           <Col>Body</Col>
-    //           <Col>Photo</Col>
-    //           <Col>Actions</Col>
-    //         </Row>
-    //       </ListGroup.Item>
+          <ListGroup.Item variant="primary">
+            <Row className="col-headers">
+              <Col>Title</Col>
+              <Col>Body</Col>
+              <Col>Photo</Col>
+              <Col>Actions</Col>
+            </Row>
+          </ListGroup.Item>
 
-    //       {state.map((item, ind) => (
-    //         <ListGroup.Item key={ind} variant="light">
-    //           <Row>
-    //             <Col>{item.title}</Col>
-    //             <Col>{item.body}</Col>
-    //             <Col><img width='100px' src={item.image}/></Col>
+          {state.map((item, ind) => (
+            <ListGroup.Item key={ind} variant="light">
+              <Row>
+                <Col>{item.title}</Col>
+                <Col>{item.body}</Col>
+                <Col><img width='100px' src={item.image}/></Col>
 
-    //             <Col>
-    //               <Button 
-    //                 variant="info"
-    //                 size="sm"
-    //                 as={Link}
-    //                 to={"/single-post/" + item._id}
-    //               >
-    //                 View
-    //               </Button>
-    //               &nbsp; &nbsp;
+                <Col>
+                  <Button 
+                    variant="info"
+                    size="sm"
+                    as={Link}
+                    to={"/single-post/" + item._id}
+                  >
+                    View
+                  </Button>
+                  &nbsp; &nbsp;
 
-    //               <DeleteDialog handleDelete={DelPost} id={item._id}/>
+                  <DeleteDialog handleDelete={DelPost} id={item._id}/>
                   
-    //             </Col>
-    //           </Row>
-    //         </ListGroup.Item>
-    //       ))} 
-    //     </ListGroup>
-    //   </Col>
-    //   <Col lg={3} md={2} sm={1} xs={1}></Col>
-    // </Row> 
-
+                </Col>
+              </Row>
+            </ListGroup.Item>
+          ))} 
+        </ListGroup>
+      </Col>
+      <Col lg={3} md={2} sm={1} xs={1}></Col>
+    </Row> 
+    </>
   );
 }
 

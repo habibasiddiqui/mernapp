@@ -29,6 +29,7 @@ function DeleteDialog(props) {
                     Delete
             </Button>
             <Dialog
+              fullWidth={true}
               open={open}
               onClose={handleClose}
               aria-labelledby="alert-dialog-title"

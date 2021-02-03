@@ -134,14 +134,7 @@ function Signup() {
                 </Grid>
 
             </Grid>
-
-
-            
-
-            
-
-
-            
+                
         </div>
     )
 }

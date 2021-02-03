@@ -23,7 +23,7 @@ function Users() {
   useEffect(() => {
       axios.get('http://localhost:4000/api/users')
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setstate(res.data.data);
       })
       .catch((e) => console.log(e));
@@ -46,7 +46,9 @@ function Users() {
 
   return (
 
-    <Editable rows={state} cols={cols} />
+    // <>
+    // </>
+    <Editable rows={state} cols={cols} tableName='Users' />
 
     // <Row className="mt-5">
     //   <Col lg={3} md={2} sm={1} xs={1}></Col>

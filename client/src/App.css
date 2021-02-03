@@ -119,11 +119,11 @@
 
 .submit{
   margin-top: 15px !important;
-  background-color: #62727b !important;
+  background-color: #37474f !important;
   color: #fff !important;
 }
 
-.icon{
+.icon, .MuiTableCell-root .MuiSvgIcon-root{
   color: #007c91;
 }
 
@@ -136,6 +136,34 @@
 .MuiFormLabel-root.Mui-focused {
   color: #102027 !important;
 }
+
+
+
+.MuiPaper-root {
+  margin: 60px 30px;
+  /* border: 2px solid green ; */
+
+}
+
+.MuiPaper-root .MuiToolbar-root,
+.MuiDialog-paper .MuiDialogTitle-root {
+  background-color: #102027 !important;
+  color: #fff !important;
+}
+
+.MuiPaper-root .MuiToolbar-root .MuiSvgIcon-root, 
+.MuiPaper-root .MuiToolbar-root .MuiTypography-root,
+.MuiPaper-root .MuiToolbar-root .MuiInputBase-adornedStart,
+.MuiPaper-root .MuiToolbar-root .MuiInput-underline::before, 
+.MuiPaper-root .MuiToolbar-root .MuiInput-underline:after 
+{
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+
+
+
 
 
 

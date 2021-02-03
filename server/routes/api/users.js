@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
             success: true,
             dbid: user._id,
             unique: true,
-            // msg: 'user created',
+            msg: 'user created',
           });
         })
       }
