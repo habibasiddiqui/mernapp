@@ -126,7 +126,9 @@
 .icon, .MuiTableCell-root .MuiSvgIcon-root{
   color: #007c91;
 }
-
+.MuiTableCell-root .MuiSvgIcon-root:hover{
+  color: #102027;
+}
 .MuiInputBase-input:focus{
   border-color: #007c91
 }
