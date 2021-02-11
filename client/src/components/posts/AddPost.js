@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, ListGroup, Row, Col } from "react-bootstrap";
 import axios from 'axios';
 import FileBase64 from "react-file-base64";
@@ -9,7 +9,29 @@ const [body, setBody] = useState('');
 const [title, setTitle] = useState('');
 const [image, setImage] = useState('');
 
+// for auth-token
+// const [checkOnlineUser, setcheckOnlineUser] = useState('')
+const [token, settoken] = useState(null);
+const [name, setname] = useState(null);
+
 const history = useHistory();
+
+useEffect(() => {
+  const checkOnlineUser = JSON.parse(localStorage.getItem("userData"));
+  console.log(checkOnlineUser);
+  if(checkOnlineUser === null){
+    history.push('/signin')
+  }
+  else{
+    let { token, name } = checkOnlineUser
+    settoken(token);
+    if(!token) 
+      history.push('/signin');
+    setname(name);
+
+  }
+  
+}, [])
   
 const handleSubmit=(e)=>{
   e.preventDefault();
@@ -20,7 +42,12 @@ const handleSubmit=(e)=>{
   };
   // console.log(user);
   
-  axios.post('http://localhost:4000/api/posts', post)
+  axios.post('http://localhost:4000/api/posts', post, {    
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token 
+      }   
+    })
     .then(res => {
       console.log(res.data);
       history.push('/posts');

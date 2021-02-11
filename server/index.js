@@ -25,34 +25,38 @@ app.listen(PORT, (req,res)=>{
 console.log('server is running at', PORT)
 })
 
-// setting up connect-mongodb-session store
-const dotenv = require('dotenv');
-dotenv.config();
+// // setting up connect-mongodb-session store
+// const dotenv = require('dotenv');
+// dotenv.config();
 
-const mongoDBstore = new MongoDBStore({
-    uri: process.env.MONGO_URI,
-    collection: "mySessions"
-});
+// const mongoDBstore = new MongoDBStore({
+//     uri: process.env.MONGO_URI,
+//     collection: "mySessions"
+// });
 
-const MAX_AGE = 1000 * 60 * 60 * 3; // Three hours
-app.use(
-    session({
-      name: 'online-users', //name to be put in "key" field in postman etc
-      secret: 'secret',
-      resave: true,
-      saveUninitialized: false,
+// const MAX_AGE = 1000 * 60 * 60 * 3; // Three hours
+// app.use(
+//     session({
+//       name: 'online-users', //name to be put in "key" field in postman etc
+//       secret: 'secret',
+//       resave: true,
+//       saveUninitialized: false,
        
-      store: mongoDBstore,
-      cookie: {
-        maxAge: MAX_AGE,
-        // sameSite: false,
-        // userID: '',
-        // userName: '',
-        // role: '',  
-        secure: true
-      }
-    })
-);
+//       store: mongoDBstore,
+//       cookie: {
+//         maxAge: MAX_AGE,
+//         // sameSite: false,
+//         // userID: '',
+//         // userName: '',
+//         // role: '',  
+//         secure: true
+//       }
+//     })
+// );
+
+
+
+
 
 ///Routes
 app.use('/api/users', userRoute);

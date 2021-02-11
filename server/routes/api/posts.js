@@ -1,7 +1,7 @@
 const express = require("express");
 const postRouter = express.Router();
 const Post = require("../../models/posts.js");
-
+const auth = require('../../middleware/authorization.js');
 
 //Get all posts
 postRouter.get("/", async (req, res) => {
@@ -16,7 +16,7 @@ postRouter.get("/", async (req, res) => {
 });
 
 // add single post
-postRouter.post("/", async (req, res) => {
+postRouter.post("/", auth, async (req, res) => {
   try{
       const post = await Post.create(req.body);
       res.status(201).json({

@@ -25,7 +25,8 @@ function Signin() {
             axios.post('http://localhost:4000/api/users/login', user)
             .then(res => {
                 console.log(res.data);
-                console.log('login successful')
+                console.log(res.data.msg);
+                localStorage.setItem('userData', JSON.stringify(res.data.data) );
                 history.push('/')
                 // setUnique(res.data.unique);
                 // if(unique)

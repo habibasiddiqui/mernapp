@@ -3,6 +3,11 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 //const users = require('../../Users');
 const User = require("../../models/users.js");
+const jwt = require('jsonwebtoken');
+
+const dotenv = require('dotenv');
+dotenv.config();
+
 
 //Get all users
 router.get("/", async (req, res) => {
@@ -92,6 +97,32 @@ router.delete('/:id', async (req, res) => {
 router.post('/login', async (req, res) => {
   let { pwd, email } = req.body;
   // console.log(req.body)
+
+
+  // with connect-mongodb-session
+  // try {
+  //   User.findOne({ email })
+  //     .then(user => {
+  //       // console.log(user)
+  //       bcrypt.compare(pwd, user.pwd).then((isMatch) => {
+  //         if (!isMatch) 
+  //           return res.status(400).json({ msg: "Invalid credentials" });
+  //         else {
+  //           let sessUser = { id: user._id, name: user.name, email: user.email };
+  //           req.session.user = sessUser;
+  //           // console.log(req.session.user);
+  //           res.json({
+  //             status: 200,
+  //             data: user,
+  //             msg: "login success"
+  //           })
+
+  //         }//else
+  //       }) //bcypt then
+  //       // .catch(err => console.log('.....', err))
+  //     })//usr then
+  // }//try
+
   try {
     User.findOne({ email })
       .then(user => {
@@ -100,20 +131,28 @@ router.post('/login', async (req, res) => {
           if (!isMatch) 
             return res.status(400).json({ msg: "Invalid credentials" });
           else {
-            let sessUser = { id: user._id, name: user.name, email: user.email };
-            req.session.user = sessUser;
-            // console.log(req.session.user);
-            res.json({
-              status: 200,
-              data: user,
-              msg: "login success"
+            jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY, function (err, token) {
+              let onlineUser = { id: user._id, name: user.name, email: user.email, token };
+              if(err) return res.json({
+                status: 400,
+                msg: 'Token generation failed'
+              })
+              else {
+                res.json({
+                  status: 200,
+                  data: onlineUser,
+                  msg: "login success",                  
+                })
+              }
             })
+            
 
-          }//else
-        }) //bcypt then
-        // .catch(err => console.log('.....', err))
-      })//usr then
-  }//try
+          }   // outer else
+        })  // bcypt.then
+      })  // usr then
+  }   // try
+
+
   catch (error) {
     console.log(error)
   }
