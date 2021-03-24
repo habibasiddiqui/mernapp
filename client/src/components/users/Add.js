@@ -58,6 +58,7 @@ const handleSubmit=(e)=>{
               <Row>
                 <Col className="col-headers">Password</Col>
                 <Col>
+                
                   <input type="password" name='pwd' onChange={(e)=>setPwd(e.target.value)} />
                 </Col>
               </Row>

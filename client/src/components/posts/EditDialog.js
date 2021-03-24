@@ -7,14 +7,13 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { Grid, TextField, Divider } from "@material-ui/core";
-import PersonIcon from "@material-ui/icons/Person";
-import EmailIcon from "@material-ui/icons/Email";
-import LockIcon from "@material-ui/icons/Lock";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import SubjectIcon from '@material-ui/icons/Subject';
+import ImageIcon from '@material-ui/icons/Image';
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import FileBase64 from 'react-file-base64';
+
 
 const styles = (theme) => ({
   root: {
@@ -47,43 +46,54 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-// //////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////////////////
 
-export default function AddDialog(props) {
+export default function EditDialog(props) {
   // console.log(props);
+  let { id } = useParams();
+  let {  
+    open, setOpen, handleClose,
+    oldData,
+  } = props;
 
-  let { 
-    open, setOpen, handleClose
-  } = props
+  // console.log(oldData);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
-
-  // to show pwd
-  const [showPwd, setShowPwd] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPwd(!showPwd);
-  };
+  let [title, setTitle] = useState('');
+  let [body, setBody] = useState('');
+  let [image, setImage] = useState('');
+  let [post, setPost] = useState('');
 
   const history = useHistory();
 
-  // for alert if email already exists
-  const [unique, setUnique] = useState(true);
+  // // for alert if email already exists
+  // const [unique, setUnique] = useState(true);
 
-  // submit new user
+  useEffect(() => {
+    fetch("http://localhost:4000/api/posts/" + oldData._id)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.data)
+        setTitle(data.data.title);
+        setBody(data.data.body);
+        setImage(data.data.image);
+      })
+      .catch((err) => console.log(err));
+  }, [oldData._id]);
+
+  // edit  user
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    let user = { name, email, pwd };
-    // console.log(user)
-    axios
-      .post("http://localhost:4000/api/users", user)
+    e.preventDefault();
+    let updated = { ...oldData, title, body, image,       
+      updatedAt: new Date(),
+     };
+    console.log(updated);
+    axios.put("http://localhost:4000/api/posts/edit/"+oldData._id, updated)
       .then((res) => {
-        // console.log(res.data);
-        setUnique(res.data.unique);
-        if (unique) console.log("Email created");
-        else console.log("Email already exists");
-        history.push("/users");
+        console.log(res.data);
+        // setUnique(res.data.unique);
+        // if (unique) console.log("Email created");
+        // else console.log("Email already exists");
+        history.push("/posts");
       })
       .catch((err) => console.log(err, "error"));
     setOpen(false);
@@ -101,7 +111,7 @@ export default function AddDialog(props) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          Add User Information
+          Edit Post
         </DialogTitle>
         <DialogContent dividers>
           <form onSubmit={handleSubmit}>
@@ -112,18 +122,19 @@ export default function AddDialog(props) {
               alignItems="flex-end"
             >
               <Grid item xs={1}>
-                <PersonIcon className="icon" />
+                <TextFieldsIcon className="icon" />
               </Grid>
               <Grid item xs={11}>
                 <TextField
-                  label="Username"
+                  defaultValue={oldData.title}
+                  label="Title"
                   className="input-textfield"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </Grid>
             </Grid>
 
-            <Grid
+            {/* <Grid
               className="signup-inputs"
               container
               spacing={1}
@@ -140,6 +151,26 @@ export default function AddDialog(props) {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
+            </Grid> */}
+
+            <Grid
+              className="signup-inputs"
+              container
+              spacing={1}
+              alignItems="flex-end"
+            >
+              <Grid item xs={1}>
+                <SubjectIcon className="icon" />
+              </Grid>
+              <Grid item xs={11}>
+                <TextField
+                  defaultValue={oldData.body}
+                  className="input-textfield"
+                  label="Body"
+                  multiline rows={4}
+                  onChange={(e) => setBody(e.target.value)}
+                />
+              </Grid>
             </Grid>
 
             <Grid
@@ -149,33 +180,20 @@ export default function AddDialog(props) {
               alignItems="flex-end"
             >
               <Grid item xs={1}>
-                <LockIcon className="icon" />
+                <ImageIcon className="icon" />
               </Grid>
               <Grid item xs={11}>
-                <TextField
-                  className="input-textfield"
-                  label="Password"
-                  type={showPwd ? 'text' : 'password'}
-                  onChange={(e) => setPwd(e.target.value)}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">
-                    <IconButton
-                      className='icon'
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      // onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPwd ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                  }}
-                />
+                <img src={oldData.image} width='100px'/>
+                <FileBase64
+                    multiple={false}
+                    onDone={({base64})=>setImage(base64)}>
+                </FileBase64>
               </Grid>
             </Grid>
 
             <DialogActions>
               <Button className="submit" autoFocus type="submit">
-                Add
+                Edit
               </Button>
             </DialogActions>
           </form>

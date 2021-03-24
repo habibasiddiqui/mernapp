@@ -11,8 +11,8 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import AddDialog from "../users/AddDialog";
-import EditUserDialog from "../users/EditDialog";
+import AddDialog from "../posts/AddDialog";
+import EditDialog from "../posts/EditDialog";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -39,37 +39,51 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // ////////////////////////////////////////////////////////////////////////////////////////
-function Editable({ rows, cols, tableName, name }) {
+function PostEditable({rows, cols, reload, setReload}) {
   const classes = useStyles();
 
   // table column data
-  const [columns, setColumns] = useState([]);
+  const [columns, setColumns] = useState([
+    { title: 'Title', field: 'title', editable: 'onUpdate' },
+    { title: 'Body', field: 'body', editable: 'onUpdate' },
+    { title: 'Image', field: 'image', editable: 'onUpdate', 
+      render: rowData => <img src={rowData.image} style={{width: 300 }} />
+    },
+  ]);
   // table row data
   const [data, setData] = useState([]);
 
+  // for edit
+  const [editData, setEditData] = useState('');
+
   useEffect(() => {
     setData(rows);
-    setColumns(cols);
+    // setColumns(cols);
   }, [rows]);
 
   // for add dialog box
-  const [open, setOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleAddOpen = () => {
+    setAddOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleAddClose = () => {
+    setAddOpen(false);
   };
 
+  // for edit dialog box
+  const [editOpen, setEditOpen] = useState(false);
 
+  const handleEditOpen = (data) => {
+    //   console.log(data);
+      setEditData(data);
+    setEditOpen(true);
 
-  // update
-  const handleUpdate = (newData, oldData) => {
-    console.log('---new----', newData);
-    console.log('---old----', oldData);
+  };
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
 
-  }
 
 
 
@@ -77,10 +91,11 @@ function Editable({ rows, cols, tableName, name }) {
   const handleDelete = (data) => {
     console.log(data);
     let row_id = data._id;
-    axios.delete(`http://localhost:4000/api/${name}/${row_id}`)
+    axios.delete(`http://localhost:4000/api/posts/${row_id}`)
     .then(
       res => {
-        console.log('deleted successfully')
+        console.log('deleted successfully');
+        // setReload(!reload);
       }
     )
     .catch(
@@ -91,40 +106,38 @@ function Editable({ rows, cols, tableName, name }) {
   return (
     <>
       <AddDialog
-        mainOpen={open}
-        mainSetOpen={setOpen}
-        mainHandleClose={handleClose}
+        open={addOpen}
+        setOpen={setAddOpen}
+        reload={reload}
+        setReload={setReload}
+        handleClose={handleAddClose}
       />
 
-      <EditUserDialog 
-      
+      <EditDialog 
+        open={editOpen}
+        setOpen={setEditOpen}
+        handleClose={handleEditClose}
+        oldData={editData}
       />
+      
 
       <MaterialTable
         icons={tableIcons}
-        title={`All ${tableName} Information`}
-        columns={
-          tableName == "Posts"
-            ? [
-                ...columns,
-                {
-                  title: "Image",
-                  field: "image",
-                  render: (rowData) => (
-                    <img src={rowData.image} style={{ width: 300 }} />
-                  ),
-                },
-              ]
-            : columns
-        }
+        title={`All Posts Information`}
+        columns={columns}
         data={data}
         actions={[
           {
             icon: tableIcons.Add,
-            tooltip: "Add User",
+            tooltip: "Add Post",
             isFreeAction: true,
-            onClick: handleClickOpen,
+            onClick: handleAddOpen,
           },
+          rowData => ({
+              icon: tableIcons.Edit,
+              tooltip: 'Edit',
+              onClick: () => handleEditOpen(rowData),
+          })
         ]}
         options={{
           headerStyle: {
@@ -140,17 +153,17 @@ function Editable({ rows, cols, tableName, name }) {
           addRowPosition: 'last',
         }}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const dataUpdate = [...data];
-                const index = oldData.tableData.id;
-                dataUpdate[index] = newData;
-                setData([...dataUpdate]);
-                handleUpdate(newData, oldData);
-                resolve();
-              }, 1000);
-            }),
+        //   onRowUpdate: (newData, oldData) =>
+        //     new Promise((resolve, reject) => {
+        //       setTimeout(() => {
+        //         const dataUpdate = [...data];
+        //         const index = oldData.tableData.id;
+        //         dataUpdate[index] = newData;
+        //         setData([...dataUpdate]);
+        //         handleEdit(newData, oldData);
+        //         resolve();
+        //       }, 1000);
+        //     }),
           onRowDelete: (oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -168,4 +181,4 @@ function Editable({ rows, cols, tableName, name }) {
   );
 }
 
-export default Editable;
+export default PostEditable;

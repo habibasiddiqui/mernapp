@@ -7,6 +7,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import FileBase64 from 'react-file-base64';
+import axios from "axios";
 
 const EditPost = () => {
   const { id } = useParams();
@@ -16,12 +17,24 @@ const EditPost = () => {
   let [title, setTitle] = useState('');
   let [body, setBody] = useState('');
   let [image, setImage] = useState('');
+  let [user, setUser] = useState('');
+
+
+  // update
+  const handleEdit = (e) => {
+    e.preventDefault()
+    let newPost = {title, body ,image}
+    console.log(newPost)
+    axios.post('http://localhost:4000/api/posts/update/'+id, newPost)
+    .then(res => console.log(res))
+    .catch(err => console.log(err, 'error'));
+  } 
 
   useEffect(() => {
     fetch("http://localhost:4000/api/posts/" + id)
       .then((res) => res.json())
       .then((data) => {
-        setPost(data.data); 
+        setUser(data.data); 
         setTitle(data.data.title);
         setBody(data.data.body);
         setImage(data.data.image);
@@ -29,18 +42,10 @@ const EditPost = () => {
       .catch((err) => console.log(err));
   }, [id]);
 
-  // update
-  // const handleEdit = () => {
-  //   const editTitle = prompt("new title", post?.title);
-  //   setPost({
-  //     title: editTitle,
-  //   })
-  //   console.log(post);
-  // } 
+  
 
-  let [mouseEnter, setMouseEnter] = useState(false);
-  let [editMode, setEditMode] = useState(false);
   return (
+    <form onSubmit={handleEdit}>
     <Row className="mt-5">
       <Col lg={3} md={2} sm={1} xs={1}></Col>
       <Col lg={6} md={8} sm={10} xs={10}>
@@ -49,20 +54,24 @@ const EditPost = () => {
             Selected Post Information
           </ListGroup.Item>
           <ListGroup.Item variant="light">
-            <Row>
+            {/* <Row>
               <Col className="col-headers">ID</Col>
               <Col>{post?._id}</Col>
-            </Row>
+            </Row> */}
             <Row>
               <Col className="col-headers">Title</Col>
               <Col>
-                <input type='text' value={title} />
+                <input type='text' value={title} 
+                  onChange={e => setTitle(e.target.value)} 
+                />
               </Col>
             </Row>
             <Row>
               <Col className="col-headers">Body</Col>
               <Col>
-                <textarea type='text' value={body} rows='5' style={{width:'100%'}}></textarea>
+                <textarea type='text' value={body} rows='5' style={{width:'100%'}}
+                  onChange={e => setBody(e.target.value)}                
+                ></textarea>
               </Col>
             </Row>
             <Row>
@@ -75,44 +84,18 @@ const EditPost = () => {
               </FileBase64></Col>
             </Row>
 
-            {/* <TextField
-              // defaultValue={post?.title}
-              value={title}
-              margin="normal"
-              onChange={(e)=>setTitle(e.target.value)}
-              // disabled={!editMode}
-              // className={classes.textField}
-              onMouseEnter={() => {setMouseEnter(true); }}
-              onMouseLeave={() => {setMouseEnter(false); }}
-              InputProps={{
-                // classes: {
-                //   disabled: classes.disabled
-                // },
-               
-                endAdornment: mouseEnter ? (
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => setEditMode(true) } >
-                      <EditIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ) : (
-                  ""
-                )
-                
-          }}
-        /> */}
+            
 
-{/* 
             <Row className="my-2">
                 <Col className="text-center">
                   <Button type='submit' variant="info" size="md">
                     Done
                   </Button>
                 </Col>
-            </Row> */}
+            </Row>
 
             
-            <Row className="my-2">
+            {/* <Row className="my-2">
                 <Col className="text-center">
                   <Button variant="info"
                     size="sm"
@@ -121,13 +104,14 @@ const EditPost = () => {
                       Edit
                   </Button>
                 </Col>
-            </Row>
+            </Row> */}
             
           </ListGroup.Item>
         </ListGroup>
       </Col>
       <Col lg={3} md={2} sm={1} xs={1}></Col>
     </Row>
+    </form>
   );
 };
 

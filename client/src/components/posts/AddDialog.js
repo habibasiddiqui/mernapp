@@ -7,14 +7,13 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { Grid, TextField, Divider } from "@material-ui/core";
-import PersonIcon from "@material-ui/icons/Person";
-import EmailIcon from "@material-ui/icons/Email";
-import LockIcon from "@material-ui/icons/Lock";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import SubjectIcon from '@material-ui/icons/Subject';
+import ImageIcon from '@material-ui/icons/Image';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import FileBase64 from 'react-file-base64';
+
 
 const styles = (theme) => ({
   root: {
@@ -53,37 +52,54 @@ export default function AddDialog(props) {
   // console.log(props);
 
   let { 
-    open, setOpen, handleClose
+    open, setOpen, handleClose,
+    reload, setReload
   } = props
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
-
-  // to show pwd
-  const [showPwd, setShowPwd] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPwd(!showPwd);
-  };
+  const [body, setBody] = useState('');
+const [title, setTitle] = useState('');
+const [image, setImage] = useState('');
 
   const history = useHistory();
 
   // for alert if email already exists
   const [unique, setUnique] = useState(true);
 
-  // submit new user
+  const [token, settoken] = useState(null);
+const [name, setname] = useState(null);
+
+useEffect(() => {
+  const checkOnlineUser = JSON.parse(localStorage.getItem("userData"));
+    if(checkOnlineUser === null){
+      history.push('/signin')
+    }
+    else{
+      let { token, name } = checkOnlineUser
+    settoken(token);
+    if(!token) 
+      history.push('/signin');
+    setname(name);
+    }
+}, [reload])
+
+  // submit new post in admin mode
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    let user = { name, email, pwd };
+    e.preventDefault();
+
+
+    let post = { title, body, image };
     // console.log(user)
-    axios
-      .post("http://localhost:4000/api/users", user)
+    axios.post("http://localhost:4000/api/posts", post, {    
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token 
+        }
+      })
       .then((res) => {
         // console.log(res.data);
-        setUnique(res.data.unique);
-        if (unique) console.log("Email created");
-        else console.log("Email already exists");
-        history.push("/users");
+        setReload(!reload);
+        history.push("/posts");
+      
       })
       .catch((err) => console.log(err, "error"));
     setOpen(false);
@@ -101,7 +117,7 @@ export default function AddDialog(props) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          Add User Information
+          Add New Post
         </DialogTitle>
         <DialogContent dividers>
           <form onSubmit={handleSubmit}>
@@ -112,13 +128,13 @@ export default function AddDialog(props) {
               alignItems="flex-end"
             >
               <Grid item xs={1}>
-                <PersonIcon className="icon" />
+                <TextFieldsIcon className="icon" />
               </Grid>
               <Grid item xs={11}>
                 <TextField
-                  label="Username"
+                  label="Title"
                   className="input-textfield"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -130,14 +146,14 @@ export default function AddDialog(props) {
               alignItems="flex-end"
             >
               <Grid item xs={1}>
-                <EmailIcon className="icon" />
+                <SubjectIcon className="icon" />
               </Grid>
               <Grid item xs={11}>
                 <TextField
+                multiline rows={4}
                   className="input-textfield"
-                  label="Email"
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  label="Body"
+                  onChange={(e) => setBody(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -149,27 +165,14 @@ export default function AddDialog(props) {
               alignItems="flex-end"
             >
               <Grid item xs={1}>
-                <LockIcon className="icon" />
+                <ImageIcon className="icon" />
               </Grid>
               <Grid item xs={11}>
-                <TextField
-                  className="input-textfield"
-                  label="Password"
-                  type={showPwd ? 'text' : 'password'}
-                  onChange={(e) => setPwd(e.target.value)}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">
-                    <IconButton
-                      className='icon'
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      // onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPwd ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                  }}
-                />
+              <FileBase64
+                    multiple={false}
+                    onDone={({base64})=>setImage(base64)}>
+
+                  </FileBase64>
               </Grid>
             </Grid>
 

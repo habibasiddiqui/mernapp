@@ -7,6 +7,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
+import { useAuth } from '../../contexts/AuthContext';
 
 
 function Signin() {
@@ -18,6 +19,13 @@ function Signin() {
     // to check single user and no repeat
     const [unique, setUnique] = useState(true);
 
+    // to set admin/user status
+    // const { currentUser, setCurrentUser } = useAuth();
+    const { role, setRole, 
+        online, setOnline 
+    } = useAuth();
+
+    // console.log(currentUser)
     const handleSubmit = (e) => {
         e.preventDefault();
         let user = {email, pwd};
@@ -25,8 +33,10 @@ function Signin() {
             axios.post('http://localhost:4000/api/users/login', user)
             .then(res => {
                 console.log(res.data);
-                console.log(res.data.msg);
+                // console.log(res.data.msg);
                 localStorage.setItem('userData', JSON.stringify(res.data.data) );
+                setOnline(true);
+                setRole(res.data.data.role);
                 history.push('/')
                 // setUnique(res.data.unique);
                 // if(unique)
@@ -35,7 +45,7 @@ function Signin() {
             .catch(err=>console.log(err,'error'));
     }
 
-
+    console.log(role);
     return (
         <div>
             <Grid container spacing={3}>

@@ -1,7 +1,10 @@
 
 
 .navbar {
-  background-color: #00acc1 !important;
+  /* background-color: #00acc1 !important; */
+
+  background-color: #a8b545 !important;
+/* color: white; */
   padding-top: 0;
   padding-bottom: 0;
   /* border: 1px solid black; */
@@ -11,6 +14,9 @@
   font-weight: 400;
   font-size: 20px;
   color: #000000 !important;
+
+  /* color: white !important; */
+
   margin-left: 10px;
   margin-right: 10px;
   /* border-bottom: 4px solid black; */
@@ -123,8 +129,13 @@
   color: #fff !important;
 }
 
+.icon {
+  vertical-align: middle;
+}
+
 .icon, .MuiTableCell-root .MuiSvgIcon-root{
   color: #007c91;
+  
 }
 .MuiTableCell-root .MuiSvgIcon-root:hover{
   color: #102027;
@@ -149,8 +160,15 @@
 
 .MuiPaper-root .MuiToolbar-root,
 .MuiDialog-paper .MuiDialogTitle-root {
-  background-color: #102027 !important;
-  color: #fff !important;
+  /* background-color: #102027 !important; */
+
+  /* background-color: #5ddef4 !important; */
+
+  background-color: #dce775;
+
+  /* color: #fff !important; */
+
+  color: black !important;
 }
 
 .MuiPaper-root .MuiToolbar-root .MuiSvgIcon-root, 
@@ -159,8 +177,11 @@
 .MuiPaper-root .MuiToolbar-root .MuiInput-underline::before, 
 .MuiPaper-root .MuiToolbar-root .MuiInput-underline:after 
 {
-  color: #fff !important;
-  border-color: #fff !important;
+  /* color: #fff !important;
+  border-color: #fff !important; */
+
+  color: black !important;
+  border-color: black !important;
 }
 
 

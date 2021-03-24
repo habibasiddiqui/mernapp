@@ -70,4 +70,30 @@ postRouter.delete('/:id', async (req, res) => {
 
 });
 
+
+
+
+// update post
+postRouter.put('edit/:id', async (req, res) => {
+  console.log('edit post', req.body);
+  try{
+    const post = await Post.findByIdAndUpdate(req.params.id, req.body);
+  res.json({
+      success: true,
+      status: 200, //ok
+      data: post,
+      msg: 'updated successfully'
+  })
+  }
+  catch(err) {
+    res.json({ 
+      success: false,
+      status: 400,
+      error: err.message });
+  }
+  
+});
+
+
+
 module.exports = postRouter;

@@ -10,9 +10,6 @@ import { Grid, TextField, Divider } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 import EmailIcon from "@material-ui/icons/Email";
 import LockIcon from "@material-ui/icons/Lock";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -49,40 +46,46 @@ const DialogTitle = withStyles(styles)((props) => {
 
 // //////////////////////////////////////////////////////////////////////////////
 
-export default function AddDialog(props) {
+export default function EditDialog(props) {
   // console.log(props);
 
-  let { 
-    open, setOpen, handleClose
-  } = props
+  let {  
+    open, setOpen, handleClose,
+    oldData,
+  } = props;
+
+  // console.log(oldData);
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
-
-  // to show pwd
-  const [showPwd, setShowPwd] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPwd(!showPwd);
-  };
 
   const history = useHistory();
 
-  // for alert if email already exists
-  const [unique, setUnique] = useState(true);
+  // // for alert if email already exists
+  // const [unique, setUnique] = useState(true);
 
-  // submit new user
+  useEffect(() => {
+    fetch("http://localhost:4000/api/users/" + oldData._id)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.data)
+        setName(data.data.name);
+        setPwd(data.data.pwd);
+      })
+      .catch((err) => console.log(err));
+  }, [oldData._id]);
+
+  // edit  user
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    let user = { name, email, pwd };
-    // console.log(user)
-    axios
-      .post("http://localhost:4000/api/users", user)
+    e.preventDefault();
+    let updated = { name, pwd };
+    console.log(oldData._id);
+    axios.post("http://localhost:4000/api/users/edit/"+oldData._id, updated)
       .then((res) => {
-        // console.log(res.data);
-        setUnique(res.data.unique);
-        if (unique) console.log("Email created");
-        else console.log("Email already exists");
+        console.log(res.data);
+        // setUnique(res.data.unique);
+        // if (unique) console.log("Email created");
+        // else console.log("Email already exists");
         history.push("/users");
       })
       .catch((err) => console.log(err, "error"));
@@ -101,7 +104,7 @@ export default function AddDialog(props) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          Add User Information
+          Edit User Information
         </DialogTitle>
         <DialogContent dividers>
           <form onSubmit={handleSubmit}>
@@ -116,6 +119,7 @@ export default function AddDialog(props) {
               </Grid>
               <Grid item xs={11}>
                 <TextField
+                  defaultValue={oldData.name}
                   label="Username"
                   className="input-textfield"
                   onChange={(e) => setName(e.target.value)}
@@ -123,7 +127,7 @@ export default function AddDialog(props) {
               </Grid>
             </Grid>
 
-            <Grid
+            {/* <Grid
               className="signup-inputs"
               container
               spacing={1}
@@ -140,7 +144,7 @@ export default function AddDialog(props) {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
-            </Grid>
+            </Grid> */}
 
             <Grid
               className="signup-inputs"
@@ -153,29 +157,18 @@ export default function AddDialog(props) {
               </Grid>
               <Grid item xs={11}>
                 <TextField
+                  defaultValue={oldData.pwd}
                   className="input-textfield"
                   label="Password"
-                  type={showPwd ? 'text' : 'password'}
+                  type="password"
                   onChange={(e) => setPwd(e.target.value)}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">
-                    <IconButton
-                      className='icon'
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      // onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPwd ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                  }}
                 />
               </Grid>
             </Grid>
 
             <DialogActions>
               <Button className="submit" autoFocus type="submit">
-                Add
+                Edit
               </Button>
             </DialogActions>
           </form>

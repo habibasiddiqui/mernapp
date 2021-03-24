@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import DeleteDialog from "./DeleteDialog";
 import Editable from "../tables/Editable";
 import one from '../../images/1.jpg';
+import PostEditable from "../tables/PostEditable";
 
 
 function Posts() {
@@ -15,9 +16,9 @@ function Posts() {
   const [cols, setCols] = useState([
     { title: 'Title', field: 'title', editable: 'onUpdate' },
     { title: 'Body', field: 'body', editable: 'onUpdate' },
-    // { title: 'Image', field: 'image', editable: 'onUpdate', 
-      // render: rowData => <img src={rowData.imageUrl} style={{width: 40, borderRadius: '50%'}} 
-    // },
+    { title: 'Image', field: 'image', editable: 'onUpdate', 
+      render: rowData => <img src={rowData.imageUrl} style={{width: 40, borderRadius: '50%'}} />
+    },
 
   ])
   // table rows
@@ -47,29 +48,28 @@ function Posts() {
   }, [reload]);
 
 
-  const DelPost = (item_id) => {
-    axios.delete("http://localhost:4000/api/posts/" + item_id)
-      .then(
-        (res) => {
-          // history.pushState('/posts');
-          setReload(!reload);
-          setDelFlag(true);
-          setMsg('Post was deleted successfully');
+  // const DelPost = (item_id) => {
+  //   axios.delete("http://localhost:4000/api/posts/" + item_id)
+  //     .then(
+  //       (res) => {
+  //         // history.push('/posts');
+  //         setReload(!reload);
+  //         setDelFlag(true);
+  //         setMsg('Post was deleted successfully');
           
-        })
-      .catch((err) => console.log(err));
-  }
+  //       })
+  //     .catch((err) => console.log(err));
+  // }
 
-  // console.log(stateImg);
 
 
 
   return (
 
     <>
-    <Editable rows={state} cols={cols} tableName='Posts' />
-
-     <Row className="mt-5">
+    <PostEditable rows={state} cols={cols} reload={reload} setReload={setReload}/>
+    
+     {/* <Row className="mt-5">
       <Col lg={3} md={2} sm={1} xs={1}></Col>
       <Col lg={6} md={8} sm={10} xs={10}>
         <ListGroup>
@@ -100,9 +100,9 @@ function Posts() {
                     variant="info"
                     size="sm"
                     as={Link}
-                    to={"/single-post/" + item._id}
+                    to={"/edit-post/" + item._id}
                   >
-                    View
+                    Edit
                   </Button>
                   &nbsp; &nbsp;
 
@@ -115,7 +115,7 @@ function Posts() {
         </ListGroup>
       </Col>
       <Col lg={3} md={2} sm={1} xs={1}></Col>
-    </Row> 
+    </Row>  */}
     </>
   );
 }

@@ -4,6 +4,7 @@ import { ListGroup, Row, Col, Button, Alert } from "react-bootstrap";
 import axios from 'axios';
 import DeleteDialog from './DeleteDialog';
 import Editable from "../tables/Editable";
+import UserEditable from "../tables/UserEditable";
 
 function Users() {
 
@@ -48,8 +49,8 @@ function Users() {
 
     // <>
     // </>
-    <Editable rows={state} cols={cols} tableName='Users' />
-
+    // <Editable rows={state} cols={cols} tableName='Users' name='users' />
+    <UserEditable rows={state} cols={cols} />
     // <Row className="mt-5">
     //   <Col lg={3} md={2} sm={1} xs={1}></Col>
     //   <Col lg={6} md={8} sm={10} xs={10}>

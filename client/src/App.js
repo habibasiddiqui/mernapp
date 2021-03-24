@@ -15,59 +15,68 @@ import SinglePostHome from "./components/posts/SinglePostHome";
 import Signin from "./components/authorization/Signin";
 import Signup from "./components/authorization/Signup";
 import SignOut from "./components/authorization/SignOut";
+import EditDialog from "./components/posts/EditDialog";
+import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Header />
+    <AuthProvider>
+      <Router>
+        <div>
+          <Header />
 
-        <Switch>
-          {/* User */}
-          <Route path="/register">
-            <Add />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/single-user/:id">
-            <SingleUser />
-          </Route>
-          
-          {/* Post */}
-          <Route path="/posts">
-            <Posts />
-          </Route>
-          <Route path="/add-post">
+          <Switch>
+            {/* User */}
+            <Route path="/register">
+              <Add />
+            </Route>
+            <Route path="/users">
+              <Users />
+            </Route>
+            <Route path="/single-user/:id">
+              <SingleUser />
+            </Route>
+
+            {/* Post */}
+            <Route path="/posts">
+              <Posts />
+            </Route>
+            {/* <Route path="/add-post">
             <AddPost />
-          </Route>
-          <Route path="/single-post/:id">
-            <SinglePost />
-          </Route>
-          <Route path="/edit-post/:id">
-            <EditPost />
-          </Route>
-          <Route path="/single-post-home/:id">
-            <SinglePostHome />
-          </Route>
+            </Route> */}
+            <PrivateRoute exact path="add-post">
+              <AddPost />
+            </PrivateRoute>
+            <Route path="/single-post/:id">
+              <SinglePost />
+            </Route>
+            <Route path="/edit-post/:id">
+              <EditPost />
+              {/* <EditDialog /> */}
+            </Route>
+            <Route path="/single-post-home/:id">
+              <SinglePostHome />
+            </Route>
 
-          {/* auth */}
-          <Route path='/signin'>
-            <Signin />
-          </Route>
-          <Route path='/signup'>
-            <Signup />
-          </Route>
-          <Route path='/signout'>
-            <SignOut />
-          </Route>
-          
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+            {/* auth */}
+            <Route path="/signin">
+              <Signin />
+            </Route>
+            <Route path="/signup">
+              <Signup />
+            </Route>
+            <Route path="/signout">
+              <SignOut />
+            </Route>
+
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

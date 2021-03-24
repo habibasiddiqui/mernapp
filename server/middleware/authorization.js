@@ -6,7 +6,7 @@ const auth = async (req, res, next) => {
     try {
         console.log(req.headers)
         const token = req.headers.authorization;
-        const decodedToken = jwt.verify(token,process.env.JWT_KEY);
+        const decodedToken = jwt.verify(token, process.env.JWT_KEY);
         req.userData = {
             email: decodedToken.email,
             id: decodedToken.id

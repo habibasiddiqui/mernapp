@@ -18,7 +18,7 @@ const history = useHistory();
 
 useEffect(() => {
   const checkOnlineUser = JSON.parse(localStorage.getItem("userData"));
-  console.log(checkOnlineUser);
+  // console.log(checkOnlineUser);
   if(checkOnlineUser === null){
     history.push('/signin')
   }
@@ -58,7 +58,7 @@ const handleSubmit=(e)=>{
 }
 
   return (
-    // encType='multipart/form-data'
+
     <form onSubmit={handleSubmit} >
       <Row className="mt-5" >
         <Col lg={3} md={2} sm={1} xs={1}></Col>
